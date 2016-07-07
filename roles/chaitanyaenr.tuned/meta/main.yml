@@ -1,0 +1,19 @@
+---
+galaxy_info:
+  author: Naga Ravi Chaitanya Elluri
+  description: Installs tuned and enables it.
+  company: redhat
+  license: BSD
+  min_ansible_version: 1.2
+  platforms:
+  - name: EL
+    versions:
+    - all
+  - name: Fedora
+    versions:
+    - all
+  galaxy_tags:
+    - installer
+    - application
+    - system
+dependencies: []

@@ -1,0 +1,15 @@
+---
+- name: install tuned via dnf
+  dnf: name={{ item }} state=latest
+  with_items:
+    - tuned
+  when: ansible_pkg_mgr == 'dnf'
+
+- name: install tuned via yum
+  yum: name={{ item }} state=latest
+  with_items:
+    - tuned
+  when: ansible_pkg_mgr == 'yum'
+
+- name: start tuned
+  service: name=tuned state=started enabled=yes

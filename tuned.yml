@@ -1,0 +1,31 @@
+---
+- hosts: tuned
+  user: root
+  roles:
+    - role: chaitanyaenr.tuned 
+  vars:
+    - profile: "{{ PROFILE }}" 
+    - disable: "{{ DISABLE|default(' ') }}"
+    - recommend: "{{ RECOMMEND|default(' ') }}"
+    - profile_path: "{{ PROFILE_PATH }}"
+    - profile_name: "{{ PROFILE_NAME }}"
+    - tuned_profile_path: /usr/lib/tuned/
+  tasks:
+    - name: start-profile
+      shell: tuned-adm profile "{{ profile }}"
+      when: profile is defined
+    - name: Disable profile
+      shell: tuned-adm off
+      when: disable == "yes"
+    - name: recommend profile 
+      command: tuned-adm recommend
+      register: get_profile
+    - name: start the recommended profile 
+      shell: tuned-adm profile "{{ get_profile.stdout }}"  
+      when: recommend == "yes"
+    - name: start your written profile
+      copy: src={{ profile_path }} dest={{ tuned_profile_path }}
+      when: profile_path is defined
+    - name: start user-profile
+      shell: tuned-adm profile "{{ profile_name }}"
+      when: profile_path is defined
